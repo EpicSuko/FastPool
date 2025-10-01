@@ -51,6 +51,7 @@ try {
 
 ```java
 import com.suko.pool.StripedObjectPool;
+import com.suko.pool.AutoGrowConfig;
 
 // Create striped pool with auto-grow
 StripedObjectPool<MyObject> stripedPool = new StripedObjectPool<>(
@@ -61,7 +62,7 @@ StripedObjectPool<MyObject> stripedPool = new StripedObjectPool<>(
 );
 
 // Enable instant auto-grow (cooldown = 0)
-StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 0, 1, 0);
+AutoGrowConfig config = new AutoGrowConfig(1, 0, 1, 0);
 stripedPool.enableAutoGrow(config);
 
 // Use the pool
@@ -122,7 +123,9 @@ try (Pooled<MyObject> pooled = Pooled.get(MyObject.class)) {
 ### AutoGrowConfig
 
 ```java
-StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(
+import com.suko.pool.AutoGrowConfig;
+
+AutoGrowConfig config = new AutoGrowConfig(
     1,                              // addStripesPerEvent
     0,                              // cooldownMillis (0 = instant growth)
     5,                              // missBurstThreshold
@@ -130,7 +133,7 @@ StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(
 );
 
 // Or use defaults
-StripedObjectPool.AutoGrowConfig defaults = StripedObjectPool.AutoGrowConfig.withDefaults(64);
+AutoGrowConfig defaults = AutoGrowConfig.withDefaults(64);
 ```
 
 ## Performance Characteristics
