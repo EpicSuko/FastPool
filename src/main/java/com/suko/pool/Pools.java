@@ -38,7 +38,7 @@ public enum Pools {
      * @param config the auto-grow configuration
      */
     public <T> void createStriped(Class<T> type, Supplier<T> factory, Consumer<T> reset, 
-                                 int initialStripes, int stripeSize, StripedObjectPool.AutoGrowConfig config) {
+                                 int initialStripes, int stripeSize, AutoGrowConfig config) {
         StripedObjectPool<T> pool = new StripedObjectPool<>(factory, reset, initialStripes, stripeSize);
         pool.enableAutoGrow(config);
         pools.put(type, pool);
@@ -61,7 +61,7 @@ public enum Pools {
      * @param config the auto-grow configuration
      */
     @SuppressWarnings("unchecked")
-    public <T> void enableAutoGrow(Class<T> type, StripedObjectPool.AutoGrowConfig config) {
+    public <T> void enableAutoGrow(Class<T> type, AutoGrowConfig config) {
         Pool<?> pool = pools.get(type);
         if (pool instanceof StripedObjectPool) {
             ((StripedObjectPool<T>) pool).enableAutoGrow(config);

@@ -359,7 +359,7 @@ public class StripedObjectPoolTest {
             () -> new TestObject(), obj -> obj.reset(), 1, 2);
         
         // Enable auto-grow with aggressive settings
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 10, 2, 10);
+        AutoGrowConfig config = new AutoGrowConfig(1, 10, 2, 10);
         smallPool.enableAutoGrow(config);
         
         Assert.assertTrue(smallPool.isAutoGrowEnabled());
@@ -404,7 +404,7 @@ public class StripedObjectPoolTest {
             () -> new TestObject(), obj -> obj.reset(), 1, 2);
         
         // Enable auto-grow with max stripes limit
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 5, 1, 3);
+        AutoGrowConfig config = new AutoGrowConfig(1, 5, 1, 3);
         pool.enableAutoGrow(config);
         
         // Hammer the pool to trigger growth
@@ -443,7 +443,7 @@ public class StripedObjectPoolTest {
             () -> new TestObject(), obj -> obj.reset(), 1, 2);
         
         // Enable auto-grow with short cooldown
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 100, 1, 0);
+        AutoGrowConfig config = new AutoGrowConfig(1, 100, 1, 0);
         pool.enableAutoGrow(config);
         
         int initialStripes = pool.stripeCount();
@@ -487,7 +487,7 @@ public class StripedObjectPoolTest {
             () -> new TestObject(), obj -> obj.reset(), 1, 4);
         
         // Enable auto-grow with high threshold
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 10, 10, 0);
+        AutoGrowConfig config = new AutoGrowConfig(1, 10, 10, 0);
         pool.enableAutoGrow(config);
         
         int initialStripes = pool.stripeCount();
@@ -526,7 +526,7 @@ public class StripedObjectPoolTest {
         Assert.assertFalse("Auto-grow should be disabled by default", pool.isAutoGrowEnabled());
         
         // Enable auto-grow
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 10, 2, 5);
+        AutoGrowConfig config = new AutoGrowConfig(1, 10, 2, 5);
         pool.enableAutoGrow(config);
         Assert.assertTrue("Auto-grow should be enabled", pool.isAutoGrowEnabled());
         
@@ -544,7 +544,7 @@ public class StripedObjectPoolTest {
         
         try {
             // Enable auto-grow with maintenance
-            StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 10, 5, 0);
+            AutoGrowConfig config = new AutoGrowConfig(1, 10, 5, 0);
             pool.enableAutoGrowWithMaintenance(scheduler, config);
             
             Assert.assertTrue("Auto-grow should be enabled", pool.isAutoGrowEnabled());
@@ -562,7 +562,7 @@ public class StripedObjectPoolTest {
     
     @Test
     public void testAutoGrowConfigDefaults() {
-        StripedObjectPool.AutoGrowConfig config = StripedObjectPool.AutoGrowConfig.withDefaults(8);
+        AutoGrowConfig config = AutoGrowConfig.withDefaults(8);
         
         Assert.assertEquals("Default addStripesPerEvent should be 1", 1, config.addStripesPerEvent);
         Assert.assertEquals("Default cooldownMillis should be 25", 25, config.cooldownMillis);
@@ -573,7 +573,7 @@ public class StripedObjectPoolTest {
     @Test
     public void testAutoGrowConfigValidation() {
         // Test that negative values are clamped to minimums
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(0, -5, -10, -1);
+        AutoGrowConfig config = new AutoGrowConfig(0, -5, -10, -1);
         
         Assert.assertEquals("addStripesPerEvent should be clamped to 1", 1, config.addStripesPerEvent);
         Assert.assertEquals("cooldownMillis should be clamped to 0", 0, config.cooldownMillis);
@@ -587,7 +587,7 @@ public class StripedObjectPoolTest {
             () -> new TestObject(), obj -> obj.reset(), 1, 2);
         
         // Enable auto-grow with instant growth (cooldown = 0) and low threshold
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 0, 1, 0);
+        AutoGrowConfig config = new AutoGrowConfig(1, 0, 1, 0);
         pool.enableAutoGrow(config);
         
         Assert.assertEquals("cooldownMillis should be 0", 0, config.cooldownMillis);

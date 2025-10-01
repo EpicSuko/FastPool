@@ -82,7 +82,7 @@ public class PoolInterfaceTest {
         
         // Create striped pool with auto-grow for a specific test type
         Class<TestObject> testType = TestObject.class;
-        StripedObjectPool.AutoGrowConfig config = new StripedObjectPool.AutoGrowConfig(1, 0, 1, 0);
+        AutoGrowConfig config = new AutoGrowConfig(1, 0, 1, 0);
         Pools.INSTANCE.createStriped(testType, TestObject::new, TestObject::reset, 1, 2, config);
         
         // Test hasPool
